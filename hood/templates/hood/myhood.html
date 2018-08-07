@@ -1,0 +1,66 @@
+{%extends 'base.html'%}
+{%load bootstrap4 %}
+{% block content%}
+<div class="container">
+	<div class="row">
+		<div class="col-md-2">
+		</div>
+		<div class="col-md-8">
+			<h2><strong>{{hood.name.capitalize}}</strong></h2>
+			<h4>County: <strong>{{hood.location.capitalize}}</strong></h4>
+			<h4>Hood Population : <strong>{{hood.population}}</strong></h4>
+			<h4>{{hood.bio}}</h4>
+			<a class="btn btn-sm btn-success" href="{% url 'create_post' %}">Create Post</a>
+			<a class="btn btn-sm btn-primary" href="{% url 'create_business' %}">Create Business</a>
+			<a class="btn btn-sm btn-danger" href="{% url 'exithood' hood.id %}">Exit Neighbourhood</a>
+		</div>
+	</div>
+</div>
+<br>
+<div class="container">
+	<div class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-8">
+		<ul class="nav nav-tabs">
+			<li class="active"><a data-toggle="tab" href="#forum">Forum</a></li>
+			<li><a data-toggle="tab" href="#business">Businesses</a></li>
+		</ul>
+		<div class="tab-content">
+			<div id="forum" class="tab-pane fade in active">
+				{%if posts%}
+				{% for post in posts %}
+				<div class="card">
+					<div class="card-body">
+						<p>{{post.title.capitalize}}</p>
+						<p>{{post.body}}</p>
+					</div>
+					<div class="card-footer">
+						<a href="#">Add comment</a>
+					</div>
+				</div>
+				{% endfor %}
+				{% else %}
+				<p>No Post has been created for this hood yet. Be the first to create one <a href="{% url 'create_post' %}">here</a></p>
+				{% endif %}
+			</div>
+
+			<div id="business" class="tab-pane fade">
+				{% if business %}
+				<ol>
+					{% for biz in business %}
+					<li>
+						<h4>{{biz.name.capitalize}}</h4>
+						<p>{{biz.description.capitalize}}</p>
+					</li>
+					{%endfor%}
+					{% else %}
+					<p>No Business has been created for this hood yet. Be the first to create one <a href="{% url 'create_business' %}">here</a></p>
+				</ol>
+				{% endif %}
+
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+{%endblock%}
