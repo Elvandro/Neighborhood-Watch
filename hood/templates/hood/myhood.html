@@ -6,6 +6,7 @@
 		<div class="col-md-2">
 		</div>
 		<div class="col-md-8">
+			<br>
 			<h2><strong>{{hood.name.capitalize}}</strong></h2>
 			<h4>County: <strong>{{hood.location.capitalize}}</strong></h4>
 			<h4>Hood Population : <strong>{{hood.population}}</strong></h4>
@@ -27,15 +28,22 @@
 		</ul>
 		<div class="tab-content">
 			<div id="forum" class="tab-pane fade in active">
+				<br><h4 class="text-center">Posts</h4>
 				{%if posts%}
 				{% for post in posts %}
-				<div class="card">
+				<div class="card" style="margin:10px;">
 					<div class="card-body">
-						<p>{{post.title.capitalize}}</p>
+						<p>Post title: {{post.title.capitalize}}</p>
 						<p>{{post.body}}</p>
 					</div>
 					<div class="card-footer">
-						<a href="#">Add comment</a>
+						<a href="{% url 'create_comment' post_id=post.id %}">Add comment</a>
+						<hr>
+						{% for comment in comments %}
+						{% if comment.post_id == post.id %}
+						<p>{{comment.comment}}<p>
+						{% endif %}
+						{% endfor %}
 					</div>
 				</div>
 				{% endfor %}
@@ -44,19 +52,24 @@
 				{% endif %}
 			</div>
 
+
 			<div id="business" class="tab-pane fade">
-				{% if business %}
-				<ol>
-					{% for biz in business %}
-					<li>
-						<h4>{{biz.name.capitalize}}</h4>
-						<p>{{biz.description.capitalize}}</p>
-					</li>
-					{%endfor%}
-					{% else %}
-					<p>No Business has been created for this hood yet. Be the first to create one <a href="{% url 'create_business' %}">here</a></p>
-				</ol>
-				{% endif %}
+				<br>
+				<div class="jumbotron">
+					{% if business %}
+					<ol>
+						{% for biz in business %}
+						<li>
+							<h5>{{biz.name.capitalize}}</h5>
+							<p>{{biz.description.capitalize}}</p>
+							<p class="text-muted">contact us at {{biz.email_address}}</p>
+						</li>
+						{%endfor%}
+						{% else %}
+						<p>No Business has been created for this hood yet. Be the first to create one <a href="{% url 'create_business' %}">here</a></p>
+					</ol>
+					{% endif %}
+				</div>
 
 			</div>
 		</div>
