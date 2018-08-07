@@ -13,7 +13,8 @@ def index(request):
             hood = Neighbourhood.objects.get(pk=request.user.join.hood_id.id)
             posts = Post.objects.filter(hood = request.user.join.hood_id.id)
             business = Business.objects.filter(hood = request.user.join.hood_id.id)
-            return render(request, 'hood/myhood.html', {"hood":hood, "posts":posts, "business":business})
+            comments = Comment.objects.all()
+            return render(request, 'hood/myhood.html', {"hood":hood, "posts":posts, "business":business, "comments":comments})
         else:
             neighbourhoods = Neighbourhood.objects.all()
             return render(request, 'index.html', {"neighbourhoods":neighbourhoods})
@@ -78,7 +79,7 @@ def create_business(request):
                 business.user = request.user
                 business.hood = request.user.join.hood_id
                 business.save()
-                return redirect('hood_home')
+                return redirect('index')
         else:
             form = CreateBusinessForm()
             return render(request, 'hood/create_business.html', {"form":form})
@@ -97,20 +98,19 @@ def create_post(request):
                 post.user = request.user
                 post.hood = request.user.join.hood_id
                 post.save()
-                return redirect('hood_home')
+                return redirect('index')
         else:
             form = CreatePostForm()
             return render(request, 'hood/create_post.html', {"form":form})
 
 
 @login_required(login_url='/accounts/login/')
-def create_comment(request, postId):
+def create_comment(request, post_id):
     '''
     View function to create an instance of a comment
     '''
     if Join.objects.filter(user_id = request.user).exists():
-        post = Post.objects.get(id = postId)
-        comments = Comment.objects.filter(post = postId)
+        post = Post.objects.get(id = post_id)
         if request.method == 'POST':
             form = CommentForm(request.POST)
             if form.is_valid():
@@ -118,7 +118,7 @@ def create_comment(request, postId):
                 comment.user = request.user
                 comment.post = post
                 comment.save()
-                return redirect('hood_home')
+                return redirect('index')
         else:
             form = CommentForm()
             return render(request, 'hood/create_comment.html', {"form":form})
