@@ -5,10 +5,6 @@
   <h4>Welcome to Neighbourhood Watch. Start by joining a hood or if your neighbourhood doesn't yet exist, create one <a href="{% url 'create_hood' %}">here</a>.</h4>
   <br>
   <div class="row">
-
-
-
-
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
       <ol class="carousel-indicators">
         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -35,13 +31,9 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
-
-
-
-
-
   </div>
-  <hr>
+    <br>
+  <h4 class="text-center">Existing Hoods</h4>
   <div class="row">
     {% for hood in neighbourhoods %}
     <div class="col-md-3" style="margin: 20px">
@@ -54,10 +46,10 @@
         </div>
         <div class="card-footer">
           <a href="{% url 'join_hood' hood.id %}" class="btn btn-sm btn-primary">Join hood</a>
+        </div>
       </div>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
-</div>
 </div>
 {% endblock %}
